@@ -55,6 +55,23 @@ function [xk k errk]=biseccion(f, a, b, tol, maxIter)
   err_vec;
   xk_vec;
 
+  figure;
+  plot(1:k, abs(err_vec), 'b-o', 'LineWidth', 1.5, 'MarkerSize', 5);
+  title('Iteraciones versus el error en la función');
+  xlabel('Iteraciones (k)');
+  ylabel('Error (err_vec)');
+  grid on;
+
+  figure;
+  plot(1:k, abs(xk_vec), 'b-o', 'LineWidth', 1.5, 'MarkerSize', 5);
+  title('Número de iteraciones versus la aproximación');
+  xlabel('Iteraciones (k)');
+  ylabel('Aproximacion (xk_vec)');
+  grid on;
+
+
+
+
 
 end
 
