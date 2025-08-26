@@ -1,11 +1,22 @@
 import numpy as np
 
-# m entero positivo >= 5
-# a,e vectores tamano mx1
-# b,c vectores tamano (m-1)x1
-# d vector tamano (m-2)x1
 
 def pentadiagonal(m, a, b, c, d, e):
+    """
+    Método pentadiagonal que realiza una matriz de tamaño (mxm) con los valores de 
+    los vectores a, b, c, d, e.
+
+    Parámetros:
+        m: número entero positivo >= 5
+        a,e: vectores tamaño mx1
+        b,c: vectores tamaño (m-1)x1
+        d: vector tamaño (m-2)x1
+
+    Retorna:
+        matriz: una matriz pentadiagonal
+    """
+
+    # Validación que las entradas sean correctas.
     if validar_pentadiagonal(m, a, b, c, d, e):
         matriz = np.zeros((m, m))   # Matriz donde se guarda el resultado
         
@@ -35,18 +46,24 @@ def pentadiagonal(m, a, b, c, d, e):
         print("Entrada invalida")
 
 def validar_pentadiagonal(m, a, b, c, d, e):
-    # print(m, a, b, c, d, e)
-
-    if (m >= 5 and 
-        a.size == m and                              # a vector tamano mx1
-        b.size == m - 1 and c.size == m - 1 and      # b, c vectores tamano (m-1)x1
-        d.size == m - 2 and e.size == m - 2):        # d, e vectores tamano (m-1)x1                       
+    # Función que valida que las entradas sean correctas
+    if (m >= 5 and                                   # m: un valor mayor a 5
+        a.size == m and                              # a: vector tamano mx1
+        b.size == m - 1 and c.size == m - 1 and      # b, c: vectores tamano (m-1)x1
+        d.size == m - 2 and e.size == m - 2):        # d, e: vectores tamano (m-1)x1                       
         return True
     else:
         return False
 
 
 def sistema_ecuaciones(m = 2500):
+    """
+    Función sistema_ecuaciones donde se construye una matriz pentadiagonal con m = 2500
+    para resolver un sistema de ecuaciones.
+
+    Imprime el resultado del error de la solución para el sistema de ecuaciones.
+    """
+
     # Crear los vectores
     a = np.array([2*(i + 1) for i in range(m)])     # a(i) = 2*(i+1)
     b = np.array([(i + 1)/3 for i in range(m - 1)]) # b(i) = (i + 1)/3
@@ -67,36 +84,9 @@ def sistema_ecuaciones(m = 2500):
 
     # Error con la norma euclidiana
     error = np.linalg.norm(ec_rest, 2)
+    print("Sistema de ecuaciones pentadiagonal con m =", m)
     print("Error: ", error)
 
-# # Ejemplo
-# A = pentadiagonal(5, 
-#     np.array([1, 2, 3, 4, 5]), 
-#     np.array([6, 7, 8, 9]), 
-#     np.array([10, 11, 12, 13]), 
-#     np.array([14, 15, 16]), 
-#     np.array([17, 18, 19])
-# )
-# print(A)
 
-# h = np.array([1, 2, 3, 4, 5])
-# print(h)
-
-# # Solucion sistema ecuaciones
-# x = np.linalg.solve(A, h)
-# print("x = ", x)
-
-# # Producto punto
-# dot = np.dot(A, x)
-
-# # Obtener el residuo
-# resd = h - dot
-# print("resd = ", resd)
-
-# # Error con la norma euclidiana
-# error = np.linalg.norm(resd, 2)
-# print("error = ", error)
-
-
-
-sistema_ecuaciones()
+if __name__ == "__main__":
+    sistema_ecuaciones()
