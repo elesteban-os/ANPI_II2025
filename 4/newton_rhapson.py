@@ -31,8 +31,3 @@ def new_rhapson_solve(f, x0, tol=1e-8, max_iter=10000):
             return x_k1, error, i
         x_k = x_k1
     
-start = time.time()    
-resultado = new_rhapson_solve(f, -0.1, tol=1e-8, max_iter=100)
-end = time.time()
-print("Resultado:", resultado)
-print("Tiempo de ejecución:", end - start, "segundos")

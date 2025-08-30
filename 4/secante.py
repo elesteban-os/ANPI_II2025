@@ -14,7 +14,13 @@ def secante(f,x0, x1, tol=1e-8, max_iter=10000):
     f_sym = sympify(f, evaluate=False)
     f_num = lambdify(x, f_sym, 'numpy')
     if f_num(x1) - f_num(x0) == 0:
-        raise ValueError("La función no puede evaluarse en los puntos iniciales dados.")
+        x2 = "NA"
+        error = "NA"
+        i = "NA"
+        print("La función no puede evaluarse en los puntos iniciales dados.")
+        return x2, error, i
+        
+        
     
 
     for i in range(max_iter):
@@ -25,8 +31,3 @@ def secante(f,x0, x1, tol=1e-8, max_iter=10000):
         x0, x1 = x1, x2
 
 
-start = time.time()
-resultado = secante(f, -0.1, -0.3, tol=1e-8, max_iter=100)
-end = time.time()
-print("Resultado:", resultado)
-print("Tiempo de ejecución:", end - start, "segundos")
