@@ -3,14 +3,15 @@
 from sympy import symbols, lambdify, sympify
 import time
 
-def metodo_steffensen(f, x0, tol=1e-8, max_iter=10000):
+def metodo_falsa_posicion(f, a, b, tol=1e-8, max_iter=10000):
     """
-    Función para calcular la raíz de una función con el método
-    de Steffensen
+    Obtiene la raiz de la función f en un rango [a, b]
+    por medio del metodo de falsa posicion
 
     Parametros:
         f: función
-        x0: valor inicial
+        a: limite izquierdo del rango
+        b: limite derecho del rango
         tol: error máximo permitido
         max_iter: máximo de iteraciones permitidas
 
@@ -24,50 +25,47 @@ def metodo_steffensen(f, x0, tol=1e-8, max_iter=10000):
         )  
     """
 
-    # Obtener el tiempo de ejecución
-    time_st = time.time()
-
     # Funciones numericas a utilizar
     x = symbols('x')
     f_sym = sympify(f, evaluate=False)
     f_num = lambdify(x, f_sym, 'numpy')     # Función donde se aproxima el cero.
-    form_steffensen = lambda xk: xk - ((f_num(xk) ** 2) / (f_num(xk + f_num(xk)) - (f_num(xk))))       # Función de la formula de Steffensen
+    f_falpos = lambda a, b: a - ((f_num(a) * (a - b)) / (f_num(a) - f_num(b)))     # Función que obtiene secante de a y b
 
     # Valores iniciales
-    xk, fxk = x0, f_num(x0)
+    xk, fxk = 0.0, 0.0
     k = 0
 
     # Restriccion
-    if (f_num(xk + f_num(xk)) - f_num(xk)) != 0:
+    if (f_num(a) * f_num(b)) < 0:
         # Iterar la aproximación
         for k in range(max_iter):
-            # Calcular nuevo fxk
+            # Calcular el valor de xk y fxk
+            xk = f_falpos(a, b)
             fxk = f_num(xk)
-            
+
             # Verificar si se llegó al error
             if (abs(fxk) < tol):
                 break
 
-            # Calcular nuevo xk
-            xk = form_steffensen(xk)
-
+            # Verificar teorema de bolzano
+            fa = f_num(a)
+            if ((fa * fxk) < 0):
+                b = xk
+            else:
+                a = xk
     else:
-        print("El valor inicial no es permitido")
-
-    # Calcular el tiempo de ejecución
-    time_end = time.time() - time_st
+        print("Error: no cumple teorema de Bolzano")
 
     # Retornar valores
-    return (xk, abs(fxk), k + 1, time_end)
+    return (xk, abs(fxk), k + 1)
 
 # Función para ejecutar el método de bisección y mostrar resultados
-def calc_steffensen():
-    f='x*exp(-x) - 5 - (cos(x))/(x)'
-    resultado = metodo_steffensen(f, -0.1)
+def calc_falsa_posicion():
+    f='x*exp(-x)-5-(cos(x))/(x)'
+    resultado = metodo_falsa_posicion(f, -0.3, -0.1)
     print("Aproximación:", resultado[0])
     print("Error de la función:", resultado[1])
     print("Cantidad de iteraciones:", resultado[2])
-    print("Tiempo de ejecución:", resultado[3], "s")
 
 if __name__ == "__main__":
-    calc_steffensen()
+    calc_falsa_posicion()
