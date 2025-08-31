@@ -3,10 +3,10 @@
 from sympy import symbols, lambdify, sympify
 import time
 
-def metodo_biseccion(f, a, b, tol=1e-8, max_iter=10000):
+def metodo_falsa_posicion(f, a, b, tol=1e-8, max_iter=10000):
     """
     Obtiene la raiz de la función f en un rango [a, b]
-    por medio del metodo de la bisección
+    por medio del metodo de falsa posicion
 
     Parametros:
         f: función
@@ -32,28 +32,32 @@ def metodo_biseccion(f, a, b, tol=1e-8, max_iter=10000):
     x = symbols('x')
     f_sym = sympify(f, evaluate=False)
     f_num = lambdify(x, f_sym, 'numpy')     # Función donde se aproxima el cero.
-    f_prom = lambda a, b: (a + b) / 2       # Función que obtiene el punto medio entre a y b.
+    f_falpos = lambda a, b: a - ((f_num(a) * (a - b)) / (f_num(a) - f_num(b)))     # Función que obtiene secante de a y b
 
     # Valores iniciales
     xk, fxk = 0.0, 0.0
     k = 0
 
-    # Iterar la aproximación
-    for k in range(max_iter):
-        # Calcular el punto medio y el valor en la funcion f(x)
-        xk = f_prom(a, b)
-        fxk = f_num(xk)
+    # Restriccion
+    if (f_num(a) * f_num(b)) < 0:
+        # Iterar la aproximación
+        for k in range(max_iter):
+            # Calcular el valor de xk y fxk
+            xk = f_falpos(a, b)
+            fxk = f_num(xk)
 
-        # Verificar si se llegó al error
-        if (abs(fxk) < tol):
-            break
+            # Verificar si se llegó al error
+            if (abs(fxk) < tol):
+                break
 
-        # Verificar teorema de bolzano
-        fa = f_num(a)
-        if ((fa * fxk) < 0):
-            b = xk
-        else:
-            a = xk
+            # Verificar teorema de bolzano
+            fa = f_num(a)
+            if ((fa * fxk) < 0):
+                b = xk
+            else:
+                a = xk
+    else:
+        print("Error: no cumple teorema de Bolzano")
 
     # Calcular el tiempo de ejecución
     time_end = time.time() - time_st
@@ -64,7 +68,7 @@ def metodo_biseccion(f, a, b, tol=1e-8, max_iter=10000):
 # Función para ejecutar el método de bisección y mostrar resultados
 def calc_biseccion():
     f='x*exp(-x)-5-(cos(x))/(x)'
-    resultado = metodo_biseccion(f, -0.3, -0.1)
+    resultado = metodo_falsa_posicion(f, -0.3, -0.1)
     print("Aproximación:", resultado[0])
     print("Error de la función:", resultado[1])
     print("Cantidad de iteraciones:", resultado[2])
