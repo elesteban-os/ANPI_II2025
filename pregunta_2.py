@@ -107,9 +107,6 @@ axs[2].axvline(0, color='black', linewidth=0.5)
 axs[2].grid()
 axs[2].legend()
 
-plt.tight_layout()
-plt.show()
-
 
 #---Intervalos de crecimiento y decrecimiento de funcion---
 # Puntos críticos (donde f'(x) = 0)
@@ -136,8 +133,6 @@ for i in range(n - 1):
 # Intervalo desde el último punto hasta ∞
 intervals_f.append(sp.Interval(all_points_f[-1], sp.oo))
 
-print("\nIntervalos a analizar:", intervals_f)
-
 # Analizar signo en cada intervalo
 increasing = []
 decreasing = []
@@ -157,13 +152,8 @@ for interval in intervals_f:
         
         if sign_value > 0:
             increasing.append(interval)
-            print(f"En {interval}: f'(x) > 0 → CRECIENTE")
         elif sign_value < 0:
             decreasing.append(interval)
-            print(f"En {interval}: f'(x) < 0 → DECRECIENTE")
-        else:
-            print(f"En {interval}: f'(x) = 0")
-            
     except:
         print(f"En {interval}: No se pudo evaluar")
 
@@ -232,3 +222,6 @@ for interval in intervals_dd:
 print("Cóncava hacia arriba (∪):", concave_up)
 print("Cóncava hacia abajo (∩):", concave_down)
 print("Puntos de inflexión:", inflection_points)
+
+plt.tight_layout()
+plt.show()

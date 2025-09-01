@@ -301,7 +301,6 @@ def hno(f, x0, tol=1e-8, max_iter=10000):
     f_sym = sympify(f, evaluate=False)
     f_num = lambdify(x, f_sym, 'numpy')
     
-   
     f_d = diff(f_sym, x)
     f_d_num = lambdify(x, f_d, 'numpy')
 
