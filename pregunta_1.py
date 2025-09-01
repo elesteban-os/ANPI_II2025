@@ -64,7 +64,7 @@ def sistema_ecuaciones(m = 2500):
     Imprime el resultado del error de la solución para el sistema de ecuaciones.
     """
 
-    # Crear los vectores
+    # Crear los vectores (se le suma 1 al rango de m)
     a = np.array([2*(i + 1) for i in range(m)])     # a(i) = 2*(i+1)
     b = np.array([(i + 1)/3 for i in range(m - 1)]) # b(i) = (i + 1)/3
     c = np.array([i/3 for i in range(m - 1)])       # c(i) = i/3

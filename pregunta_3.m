@@ -1,7 +1,7 @@
 
 
 
-function ejercicio3_biseccion()
+function pregunta_3()
   clc; clear; close all
 
   % Parametros para llamar a la funcion biseccion
@@ -11,6 +11,7 @@ function ejercicio3_biseccion()
   tol = 10e-8;                  % Error
   maxIter = 1000;               % Maximo de iteraciones
 
+  % LLamada a la funcion biseccion
   [xk, k, errk] = biseccion(f, a, b, tol, maxIter)
 
 end
@@ -18,15 +19,31 @@ end
 
 function [xk k errk]=biseccion(f, a, b, tol, maxIter)
 
-  % Funcion promedio
+  % Obtiene la raiz de la función f en un rango [a, b]
+  % por medio del metodo de la bisección
+  %
+  % Parametros:
+  %   f        función
+  %   a        limite izquierdo del rango
+  %   b        limite derecho del rango
+  %   tol      error máximo permitido
+  %   max_iter máximo de iteraciones permitidas
+  %
+  % Retorna:
+  %   xk     aproximación final
+  %   k      cantidad de iteraciones
+  %   errk   error de la función   
+
+  % Funcion punto medio
   f_prom = @(a, b) (a + b) / 2;
 
   % Vectores para informacion de graficas
   err_vec = [];
   xk_vec = [];
 
+  % Iterar la aproximación
   for k=1:maxIter
-    % Calcular promedio entre los dos puntos y su valor en la funcion
+    % Calcular el punto medio entre a y b además de su valor en la funcion.
     xk = f_prom(a, b);
     fxk = f(xk);
     errk = fxk;
@@ -50,11 +67,7 @@ function [xk k errk]=biseccion(f, a, b, tol, maxIter)
 
   endfor
 
-  % Graficar esto: <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-  k;
-  err_vec;
-  xk_vec;
-
+  % Graficas con la informacion obtenida
   figure;
   plot(1:k, abs(err_vec), 'b-o', 'LineWidth', 1.5, 'MarkerSize', 5);
   title('Iteraciones versus el error en la función');
@@ -68,10 +81,6 @@ function [xk k errk]=biseccion(f, a, b, tol, maxIter)
   xlabel('Iteraciones (k)');
   ylabel('Aproximacion (xk_vec)');
   grid on;
-
-
-
-
 
 end
 
