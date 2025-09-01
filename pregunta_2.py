@@ -163,12 +163,11 @@ print("Intervalos de decrecimiento:", decreasing)
 
 #---Intervalos cuando la funcion es concava hacia arriba o hacia abajo---
 
-inflection_points = [sol for sol in sp.solve(sp.Eq(f_d_II, 0), x) if sol.is_real]
-print("Puntos de inflexión REALES:", inflection_points)
+inflection_points = [sol for sol in sp.solve(sp.Eq(f_d_II, 0), x) if sol.is_real] #valores auxiliares
 
 num_dd, den_dd = sp.fraction(f_d_II)
-discontinuities_dd = [sol for sol in sp.solve(sp.Eq(den_dd, 0), x) if sol.is_real]
-print("Discontinuidades REALES:", discontinuities_dd)
+discontinuities_dd = [sol for sol in sp.solve(sp.Eq(den_dd, 0), x) if sol.is_real]#valores auxiliares
+
 
 #Todos los puntos importantes (solo reales)
 all_points_dd = []
@@ -178,50 +177,21 @@ if discontinuities_dd:
     all_points_dd.extend(discontinuities_dd)
 
 # Eliminar duplicados y ordenar (ahora sí funcionará porque todos son reales)
-all_points_dd = sorted(list(set(all_points_dd)))
-print("Todos los puntos REALES:", all_points_dd)
 
-intervals_dd = []
-
-if len(all_points_dd) == 0:
-    intervals_dd.append(sp.Interval(-sp.oo, sp.oo))
-    print("Solo un intervalo: (-∞, ∞)")
-else:
-    intervals_dd.append(sp.Interval(-sp.oo, all_points_dd[0]))
-    for i in range(len(all_points_dd) - 1):
-        intervals_dd.append(sp.Interval(all_points_dd[i], all_points_dd[i + 1]))
-    intervals_dd.append(sp.Interval(all_points_dd[-1], sp.oo))
-
-print("Intervalos a analizar:", intervals_dd)
-
-concave_up = []
-concave_down = []
-
-for interval in intervals_dd:
-    if interval.start == -sp.oo and interval.end == sp.oo:
-
-        test_point = 0
-    elif interval.start == -sp.oo:
-        test_point = interval.end - 1
-    elif interval.end == sp.oo:
-        test_point = interval.start + 1
-    else:
-        test_point = (interval.start + interval.end) / 2
-    
+intervals_to_analyze = [sp.Interval(-10, 0), sp.Interval(2, 10)] #Solo se coloca una parte del dominio, ya que en los otros tramos la función no es real, o es infinita y se limita
+for interval in intervals_to_analyze:
+    test_point = (interval.start + interval.end) / 2
     try:
-        sign_val = sp.sign(f_d_II.subs(x, test_point))
-        if sign_val > 0:
-            concave_up.append(interval)
-            print(f"En {interval}: f''(x) > 0 → Cóncava arriba (∪)")
-        elif sign_val < 0:
-            concave_down.append(interval)
-            print(f"En {interval}: f''(x) < 0 → Cóncava abajo (∩)")
+        sign_value = sp.sign(f_d_II.subs(x, test_point))
+        if sign_value > 0:
+            print(f"f es cóncava hacia arriba en [{interval.start},{sp.oo}[")
+        elif sign_value < 0:
+            print(f"f es cóncava hacia abajo en ]{-sp.oo}, {interval.end}]")
     except:
-        print(f"En {interval}: Error al evaluar")
+        print(f"En {interval}: No se pudo evaluar")
 
-print("Cóncava hacia arriba (∪):", concave_up)
-print("Cóncava hacia abajo (∩):", concave_down)
-print("Puntos de inflexión:", inflection_points)
+
+
 
 plt.tight_layout()
 plt.show()
