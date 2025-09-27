@@ -1,7 +1,5 @@
 
 
-% REVISAR SOLUCION
-
 function pregunta_4();
   clc; clear all; close all
 
@@ -25,12 +23,9 @@ function pregunta_4();
     endfor
   endfor
 
-  A, b
-
   % Aplicar eliminacion gaussiana
-  elimi_gauss(A, b);
-
-
+  display("Vector solucion: ");
+  x = elimi_gauss(A, b)
 
 endfunction
 
@@ -40,10 +35,10 @@ endfunction
 % sust atras y triang sup
 function x = elimi_gauss(A, b);
   % Calcular triangulo superior
-  [At, bt] = triang_sup(A, b)
+  [At, bt] = triang_sup(A, b);
 
   % Obtener solucion de la ecuacion
-  x = sust_atras(At, bt)
+  x = sust_atras(At, bt);
 
 endfunction
 
