@@ -1,6 +1,9 @@
 
 
 function pregunta_4();
+  ## Función principal que construye un sistema de ecuaciones Ax = b
+  ## y lo resuelve usando eliminación gaussiana
+
   clc; clear all; close all
 
   % Construir A y b
@@ -31,9 +34,17 @@ endfunction
 
 
 % ---- FUNC. MAIN ---
-% x=elimi gauss(A,b), que resuelve un sistema de ecuaciones Ax = b, utilizando las funciones
-% sust atras y triang sup
 function x = elimi_gauss(A, b);
+  ## Resuelve un sistema de ecuaciones lineales Ax = b utilizando
+  ## el método de eliminación gaussiana
+  ##
+  ## Parámetros:
+  ##   A    matriz de coeficientes (m x m)
+  ##   b    vector de términos independientes (m x 1)
+  ##
+  ## Retorna:
+  ##   x    vector solución (1 x m)
+
   % Calcular triangulo superior
   [At, bt] = triang_sup(A, b);
 
@@ -45,9 +56,18 @@ endfunction
 
 
 % ---- FUNC. AUX ----
-% [At,bt]=triang sup(A,b), que transforma un sistema Ax = b a un sistema Atx = bt usando
-% operaciones elementales entre filas, y donde At es triangular superior.
 function [At, bt] = triang_sup(A, b);
+  ## Transforma un sistema de ecuaciones Ax = b en un sistema equivalente
+  ## At*x = bt donde At es una matriz triangular superior
+  ##
+  ## Parámetros:
+  ##   A    matriz de coeficientes original (m x m)
+  ##   b    vector de términos independientes original (m x 1)
+  ##
+  ## Retorna:
+  ##   At   matriz triangular superior (m x m)
+  ##   bt   vector de términos independientes transformado (m x 1)
+
   % Obtener valor de m (cantidad de filas)
   m = size(A, 1);
 
@@ -71,10 +91,18 @@ endfunction
 
 
 % ---- FUNC. AUX ----
-% x=sust atras(A,b), que resuelve un sistema de ecuaciones Ax = b, donde A es triangular
-% inferior, usando el metodo de sustitucion hacia atras.
 function x = sust_atras(A, b);
+  ## Resuelve un sistema de ecuaciones Ax = b donde A es una matriz
+  ## triangular superior, utilizando el método de sustitución hacia atrás
+  ##
+  ## Parámetros:
+  ##   A    matriz triangular superior (m x m)
+  ##   b    vector de términos independientes (m x 1)
+  ##
+  ## Retorna:
+  ##   x    vector solución del sistema (1 x m)
   % Obtener valor de m (cantidad de filas)
+
   m = size(A, 1);
   x = zeros(1, m);
 

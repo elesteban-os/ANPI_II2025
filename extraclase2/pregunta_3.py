@@ -4,6 +4,19 @@ import matplotlib.pyplot as plt
 
 
 def pseudoinversa(matrixA, p, tol, maxIter=500):
+    """
+    Calcula la pseudoinversa de Moore-Penrose de una matriz utilizando
+    un metodo iterativo.
+    
+    Parametros:
+        matrixA  matriz de entrada (m x n)
+        p        orden de la aproximación en la serie
+        tol      tolerancia para el criterio de convergencia
+        maxIter  máximo número de iteraciones permitidas
+    
+    Retorna:
+        iters    número de iteraciones realizadas hasta convergencia
+    """
 
     # Definir valores iniciales
     matrizAK = matrixA.T / (np.linalg.norm(matrixA, "fro") ** 2)

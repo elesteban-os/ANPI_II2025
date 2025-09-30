@@ -3,6 +3,22 @@ from math import copysign, sqrt, sin
 
 
 def muller(f, x0, x1, x2, tol, iterMax):
+    """
+    Obtiene la raiz de la función f utilizando el método de Muller
+    
+    Parametros:
+        f        función a la cual se le busca la raíz
+        x0       primer punto inicial 
+        x1       segundo punto inicial
+        x2       tercer punto inicial
+        tol      error máximo permitido
+        iterMax  máximo de iteraciones permitidas
+    
+    Retorna:
+        x3_      aproximación final de la raíz
+        err      error de la función |f(x3_)|
+        iter     cantidad de iteraciones realizadas
+    """
 
     # Valores de a, b y c
     den = lambda x0, x1, x2: ((x0 - x1) * (x0 - x2) * (x1 - x2))
@@ -41,9 +57,8 @@ def muller(f, x0, x1, x2, tol, iterMax):
         x1_ = x2_
         x2_ = x3_
 
-    print("xk =", x3_)
-    print("|f(xk)| =", err)
-    print("Iteraciones:", iter)
+    return x3_, err, iter
+
 
 # Ejecutar
 if __name__ == "__main__":
@@ -51,7 +66,11 @@ if __name__ == "__main__":
     x0 = 2.5
     x1 = 2.75
     x2 = 3
-    muller(func, x0, x1, x2, 10 ** (-10), 1000)
+    sol = muller(func, x0, x1, x2, 10 ** (-10), 1000)
+
+    print("xk =", sol[0])
+    print("|f(xk)| =", sol[1])
+    print("Iteraciones:", sol[2])
 
 
 
