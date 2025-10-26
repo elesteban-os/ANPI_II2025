@@ -42,10 +42,18 @@ function pregunta_3()
   % Llamada a la funcion Adams Bashforth 4
   [x9, y9] = adams_bashforth4(yp, yp_sym, a, b, y0, n);
 
+  % Solucion exacta
+  y_exact = @(x) (log(x) - log(2) + 2) * x;
+  x0 = linspace(a, b, n);
+  y0 = zeros(1, length(x0));
+  for i=1:n
+    y0(i) = y_exact(x0(i));
+  end
 
   % --- Gráfica ---
   figure
   hold on; grid on;
+  plot(x0, y0, 'k-', 'LineWidth', 2, 'DisplayName', 'Solución Exacta');
   plot(x1, y1, '-o', 'LineWidth', 1.8, 'MarkerSize', 6, 'MarkerFaceColor', 'b', 'DisplayName', 'Euler');
   plot(x2, y2, '-o', 'LineWidth', 1.8, 'MarkerSize', 6, 'MarkerFaceColor', 'r', 'DisplayName', 'Predictor-Corrector');
   plot(x3, y3, '-o', 'LineWidth', 1.8, 'MarkerSize', 6, 'MarkerFaceColor', 'y', 'DisplayName', 'Runge Kutta 2');
