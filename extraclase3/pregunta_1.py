@@ -93,5 +93,5 @@ def jacobi_valores_propios(A, iterMax, tol):
         if (ek < tol):
             break
 
-    return xk1, ek, k
+    return xk1, ek
 
