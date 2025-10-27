@@ -2,6 +2,18 @@ import numpy as np
 from math import atan
 
 def angulo(A, i, j):
+    """
+    Obtiene el ángulo theta usado por el método de Jacobi para eliminar la
+    entrada A[i,j].
+
+    Parametros:
+        A  : matriz simétrica 
+        i  : índice fila
+        j  : índice columna , distinto de i
+
+    Retorna:
+        theta : ángulo de rotación 
+    """
     if (i != j):
         if (np.abs(A[i, j]) > 1e-16):
             return np.arctan2((2 * A[i, j]), (A[i, i] - A[j, j])) * 0.5
@@ -12,6 +24,19 @@ def angulo(A, i, j):
         return None
     
 def matrix_rotation(i, j, n, theta):
+    """
+    Construye la matriz de rotación de Jacobi G = I_n + Z que actúa sobre
+    los índices (i,j).
+
+    Parametros:
+        i     : índice fila (int)
+        j     : índice columna (int)
+        n     : tamaño de la matriz G (int)
+        theta : ángulo de rotación (float)
+
+    Retorna:
+        G, una matriz de rotación de Jacobi 
+    """
     Z = np.zeros((n, n))
     c = np.cos(theta)
     s = np.sin(theta)
@@ -24,7 +49,20 @@ def matrix_rotation(i, j, n, theta):
     return np.eye(n) + Z
 
 def jacobi_valores_propios(A, iterMax, tol):
+    """
+    Método de Jacobi para aproximar los valores propios de una matriz simétrica.
 
+    Parametros:
+        A       : matriz simétrica 
+        iterMax : número máximo de iteraciones 
+        tol     : tolerancia para el criterio de parada sobre la norma de la
+                  diferencia entre diagonales consecutivas 
+
+    Retorna:
+        xk1 : vector con las aproximaciones de los valores propios (numpy.ndarray)
+        ek  : error final (float)
+        k   : iteración en la que se paró (int)
+    """
     Ak1 = A.copy()
     Ak = np.zeros_like(A)
     m = Ak.shape[0]

@@ -1,6 +1,16 @@
 
 
 
+% -------------------------------------------------------------------------
+% pregunta_3
+% -------------------------------------------------------------------------
+% Ejecuta y compara varios métodos numéricos para resolver la EDO y' = (x-y)/x
+%
+% No tiene entradas. Define la EDO, parámetros (a,b,y0,n), llama a las
+% implementaciones (Euler, Predictor-Corrector, RK2, RK3, RK4, Taylor2,
+% Adams-Bashforth 2/3/4) y grafica las soluciones junto con la solución exacta.
+%
+% Salidas: ninguna (genera una figura).
 function pregunta_3()
   pkg load symbolic
   clc; clear; close all
@@ -44,9 +54,9 @@ function pregunta_3()
 
   % Solucion exacta
   y_exact = @(x) (log(x) - log(2) + 2) * x;
-  x0 = linspace(a, b, n);
+  x0 = linspace(a, b, 100);
   y0 = zeros(1, length(x0));
-  for i=1:n
+  for i=1:100
     y0(i) = y_exact(x0(i));
   end
 
@@ -74,6 +84,19 @@ function pregunta_3()
 
 endfunction
 
+% Euler explícito
+% -------------------------------------------------------------------------
+% Aproxima la solución de y' = f(x,y) usando el método de Euler.
+%
+% Parámetros:
+%   f   : función @(x,y) que devuelve y'(x)
+%   a,b : intervalo [a,b]
+%   y0  : condición inicial y(a)=y0
+%   n   : número de pasos
+%
+% Retorna:
+%   x : vector de nodos de longitud n+1
+%   y : aproximaciones en los nodos (vector 1 x (n+1))
 function [x, y] = euler(f, a, b, y0, n)
   h = (b - a) / n;
   x = a:h:b;
@@ -84,6 +107,17 @@ function [x, y] = euler(f, a, b, y0, n)
   endfor
 endfunction
 
+% Predictor-Corrector 
+% -------------------------------------------------------------------------
+% Parámetros:
+%   f   : función @(x,y) que devuelve y'(x)
+%   a,b : intervalo [a,b]
+%   y0  : condición inicial y(a)=y0
+%   n   : número de pasos
+%
+% Retorna:
+%   x : vector de nodos de longitud n+1
+%   y : aproximaciones en los nodos (vector 1 x (n+1))
 function [x, y] = predictor_corrector(f, a, b, y0, n)
   h = (b - a) / n;
   x = a:h:b;
@@ -97,6 +131,19 @@ function [x, y] = predictor_corrector(f, a, b, y0, n)
   endfor
 endfunction
 
+% Runge-Kutta de orden 2 (método del punto medio)
+% -------------------------------------------------------------------------
+% Implementación de un RK2 explícito (punto medio).
+%
+% Parámetros:
+%   f   : función @(x,y) que devuelve y'(x)
+%   a,b : intervalo [a,b]
+%   y0  : condición inicial y(a)=y0
+%   n   : número de pasos
+%
+% Retorna:
+%   x : vector de nodos de longitud n+1
+%   y : aproximaciones en los nodos (vector 1 x (n+1))
 function [x, y] = runge_kutta2(f, a, b, y0, n)
   h = (b - a) / n;
   x = a:h:b;
@@ -110,6 +157,19 @@ function [x, y] = runge_kutta2(f, a, b, y0, n)
   endfor
 endfunction
 
+% Runge-Kutta de orden 3 (Kutta)
+% -------------------------------------------------------------------------
+% Implementa un RK de orden 3 con la combinación K1,K2,K3.
+%
+% Parámetros:
+%   f   : función @(x,y) que devuelve y'(x)
+%   a,b : intervalo [a,b]
+%   y0  : condición inicial y(a)=y0
+%   n   : número de pasos
+%
+% Retorna:
+%   x : vector de nodos de longitud n+1
+%   y : aproximaciones en los nodos (vector 1 x (n+1))
 function [x, y] = runge_kutta3(f, a, b, y0, n)
   h = (b - a) / n;
   x = a:h:b;
@@ -124,6 +184,19 @@ function [x, y] = runge_kutta3(f, a, b, y0, n)
   endfor
 endfunction
 
+% Runge-Kutta clásico de orden 4 (RK4)
+% -------------------------------------------------------------------------
+% Implementación del RK4 con K1,K2,K3,K4.
+%
+% Parámetros:
+%   f   : función @(x,y) que devuelve y'(x)
+%   a,b : intervalo [a,b]
+%   y0  : condición inicial y(a)=y0
+%   n   : número de pasos
+%
+% Retorna:
+%   x : vector de nodos de longitud n+1
+%   y : aproximaciones en los nodos (vector 1 x (n+1))
 function [x, y] = runge_kutta4(f, a, b, y0, n)
   h = (b - a) / n;
   x = a:h:b;
@@ -140,6 +213,21 @@ function [x, y] = runge_kutta4(f, a, b, y0, n)
   endfor
 endfunction
 
+% Taylor de orden 2
+% -------------------------------------------------------------------------
+% Approxima la solución usando la expansión de Taylor hasta segundo orden:
+% y_{k+1} = y_k + h*f(x_k,y_k) + (h^2/2)*f'(x_k,y_k),
+% donde f' = df/dx + df/dy * f (derivada total).
+%
+% Parámetros:
+%   f   : función @(x,y) que devuelve y'(x)
+%   a,b : intervalo [a,b]
+%   y0  : condición inicial y(a)=y0
+%   n   : número de pasos
+%
+% Retorna:
+%   x : vector de nodos de longitud n+1
+%   y : aproximaciones en los nodos (vector 1 x (n+1))
 function [x, y] = taylor2(f, a, b, y0, n)
   h = (b - a) / n;
   x = a:h:b;
@@ -161,6 +249,19 @@ function [x, y] = taylor2(f, a, b, y0, n)
   endfor
 endfunction
 
+% Adams-Bashforth de orden 2 (AB2)
+% -------------------------------------------------------------------------
+% Método explícito de dos pasos.
+%
+% Parámetros:
+%   f   : función @(x,y) que devuelve y'(x)
+%   a,b : intervalo [a,b]
+%   y0  : condición inicial y(a)=y0
+%   n   : número de pasos
+%
+% Retorna:
+%   x : vector de nodos de longitud n+1
+%   y : aproximaciones en los nodos (vector 1 x (n+1))
 function [x, y] = adams_bashforth2(f, a, b, y0, n)
   h = (b - a) / n;
   x = a:h:b;
@@ -177,6 +278,21 @@ function [x, y] = adams_bashforth2(f, a, b, y0, n)
 
 endfunction
 
+% Adams-Bashforth de orden 3 (AB3)
+% -------------------------------------------------------------------------
+% Método multistep explícito de tercer orden. Necesita 2 pasos iniciales;
+% aquí se obtienen mediante Taylor de orden 2.
+%
+% Parámetros:
+%   f      : función numérica @(x,y)
+%   f_sym  : expresión simbólica de f en (xs,ys) usada para taylor2
+%   a,b : intervalo [a,b]
+%   y0  : condición inicial y(a)=y0
+%   n   : número de pasos
+%
+% Retorna:
+%   x : vector de nodos de longitud n+1
+%   y : aproximaciones en los nodos (vector 1 x (n+1))
 function [x, y] = adams_bashforth3(f, f_sym, a, b, y0, n)
   h = (b - a) / n;
   x = a:h:b;
@@ -194,6 +310,21 @@ function [x, y] = adams_bashforth3(f, f_sym, a, b, y0, n)
 
 endfunction
 
+% Adams-Bashforth de orden 4 (AB4)
+% -------------------------------------------------------------------------
+% Método multistep explícito de cuarto orden. Necesita 3 pasos iniciales;
+% aquí se obtienen mediante Taylor de orden 2.
+%
+% Parámetros:
+%   f      : función numérica @(x,y)
+%   f_sym  : expresión simbólica de f en (xs,ys) usada para taylor2
+%   a,b : intervalo [a,b]
+%   y0  : condición inicial y(a)=y0
+%   n   : número de pasos
+%
+% Retorna:
+%   x : vector de nodos de longitud n+1
+%   y : aproximaciones en los nodos (vector 1 x (n+1))
 function [x, y] = adams_bashforth4(f, f_sym, a, b, y0, n)
   h = (b - a) / n;
   x = a:h:b;
