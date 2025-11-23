@@ -3,20 +3,32 @@
 function pregunta_2()
   clc; clear; close all
 
-  # Valores de entrada
-  f = @(x) log(asin(x)) ./ log(x);    # Por medio de propiedades de logaritmos, f(x) = log_x (sin^(−1)(x))
+  % Función y parámetros
+
+  % Valores de entrada
+  f = @(x) log(asin(x)) ./ log(x);    % Por medio de propiedades de logaritmos, f(x) = log_x (sin^(−1)(x))
   a = 0.1;
   b = 0.8;
   xv = 0.1:0.1:0.8;
   x_0 = 0.55;
 
-  # Calcular la cota de interpolación
+  % Calcular la cota de interpolación
   ct = cota_interpolacion(f, a, b, xv, x_0);
   disp(['Cota de interpolación en x_0 = ', num2str(x_0), ': ', num2str(ct)]);
 
 end
 
 function ct = cota_interpolacion(f, a, b, xv, x_0)
+  % Función para calcular la cota de interpolación de Lagrange
+  % Entradas:
+  %   f   : función a interpolar
+  %   a   : límite inferior del intervalo
+  %   b   : límite superior del intervalo
+  %   xv  : nodos de interpolación
+  %   x_0 : punto donde se evalúa la cota
+  % Salida:
+  %   ct  : cota de interpolación en x_0
+
   pkg load symbolic
   syms x;
 

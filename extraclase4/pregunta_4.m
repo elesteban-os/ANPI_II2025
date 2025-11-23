@@ -30,7 +30,14 @@ end
 
 
 function [x, w] = nodos_pesos(k)
-  # pomax.github.io/bezierinfo/legendre-gauss.html
+  % Nodos y pesos para la cuadratura de Gauss-Legendre
+  % Fuente:
+  % pomax.github.io/bezierinfo/legendre-gauss.html
+  % Entradas:
+  %   k : número de nodos
+  % Salidas:
+  %   x : nodos
+  %   w : pesos
 
   switch k
     case 1
@@ -168,6 +175,15 @@ function [x, w] = nodos_pesos(k)
 end
 
 function I = cuad_gauss(f, a, b, k)
+  % Cuadratura de Gauss-Legendre
+  % Entradas:
+  %   f : función a integrar
+  %   a : límite inferior
+  %   b : límite superior
+  %   k : número de nodos
+  % Salida:
+  %   I : valor aproximado de la integral
+
   % Obtener nodos y pesos
   [x, w] = nodos_pesos(k);
 
@@ -184,6 +200,16 @@ function I = cuad_gauss(f, a, b, k)
 end
 
 function I = cuad_gauss_comp(f, a, b, k, n)
+  % Cuadratura de Gauss-Legendre compuesta
+  % Entradas:
+  %   f : función a integrar
+  %   a : límite inferior
+  %   b : límite superior
+  %   k : número de nodos
+  %   n : número de subintervalos
+  % Salida:
+  %   I : valor aproximado de la integral
+
   h = (b - a) / n;   % tamaño de cada subintervalo
   I = 0;
 
@@ -195,6 +221,15 @@ function I = cuad_gauss_comp(f, a, b, k, n)
 end
 
 function I = cuad_gauss_iter(f, a, b, k)
+  % Cuadratura de Gauss-Legendre con iteración hasta convergencia
+  % Entradas:
+  %   f : función a integrar
+  %   a : límite inferior
+  %   b : límite superior
+  %   k : número de nodos
+  % Salida:
+  %   I : valor aproximado de la integral
+
   tol = 1e-8;
   max_n = 1e6;
 
