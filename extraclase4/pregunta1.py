@@ -104,7 +104,13 @@ def main():
     """
     
     # Definir puntos de interpolación
-    puntos = [(1, 2), (2, 5), (3, 10), (4, 17), (5, 26)]
+    #puntos = [(1, 2), (2, 5), (3, 10), (4, 17), (5, 26)]
+    # f(x) = log_x(arcsin(x)) = ln(arcsin(x)) / ln(x)
+    f = lambda t: np.log(np.arcsin(t)) / np.log(t)
+    puntos = [(0.1, f(0.1)), (0.2, f(0.2)), (0.3, f(0.3)), (0.4, f(0.4)), (0.5, f(0.5)), (0.6, f(0.6)), (0.7, f(0.7)), (0.8, f(0.8))]
+    print(f"Puntos de interpolación: {puntos}\n")
+    
+    
     
     x = np.array([p[0] for p in puntos], dtype=float)
     y = np.array([p[1] for p in puntos], dtype=float)
@@ -115,7 +121,7 @@ def main():
     print("INTERPOLACIÓN POR DIFERENCIAS DIVIDIDAS DE NEWTON")
     print("=" * 100)
     print(f"\nPuntos de interpolación (n = {n}):")
-    print("puntos ← [(1,2), (2,5), (3,10), (4,17), (5,26)]")
+    print("puntos ← [(0.1, f(0.1)), (0.2, f(0.2)), (0.3, f(0.3)), (0.4, f(0.4)), (0.5, f(0.5)), (0.6, f(0.6)), (0.7, f(0.7)), (0.8, f(0.8))]")
     print(f"\nx = {x}")
     print(f"y = {y}\n")
     
@@ -142,42 +148,31 @@ def main():
     print("=" * 100)
     print(f"\nP(X) = {polinomio_simbolico}\n")
     
-    # Verificar si es igual a X² + 1
-    X = symbols('X')
-    polinomio_esperado = X**2 + 1
-    diferencia = simplify(polinomio_simbolico - polinomio_esperado)
-    
-    print("Verificación esperada: P(X) = X² + 1")
-    print(f"¿Es P(X) = X² + 1? ", end="")
-    if diferencia == 0:
-        print("✓ SÍ, es exactamente igual\n")
-    else:
-        print(f"No, diferencia = {diferencia}\n")
     
     # Verificar en los puntos de interpolación
     print("=" * 100)
     print("VERIFICACIÓN EN PUNTOS DE INTERPOLACIÓN")
     print("=" * 100)
-    print(f"\n{'x':>12} {'y real':>15} {'P(x)':>15} {'X²+1':>15} {'Error':>15}")
+    print(f"\n{'x':>12} {'y real':>15} {'P(x)':>15} {'f(x)':>15} {'Error':>15}")
     print("-" * 75)
     
     for i, x_val in enumerate(x):
         p_val = polinomio_numerico(x_val)
-        expected = x_val**2 + 1
+        expected = f(x_val)
         error = abs(y[i] - p_val)
         print(f"{x_val:12.4f} {y[i]:15.8f} {p_val:15.8f} {expected:15.8f} {error:15.2e}")
     
     # Evaluar en puntos intermedios
     print("\n" + "=" * 100)
-    print("EVALUACIÓN EN PUNTOS INTERMEDIOS")
+    print("EVALUACIÓN EN PUNTOS INTERMEDIOS (INTERVALO [0.1,0.8])")
     print("=" * 100)
-    print(f"\n{'x':>12} {'P(x)':>15} {'X²+1':>15} {'Diferencia':>15}")
+    print(f"\n{'x':>12} {'P(x)':>15} {'f(x)':>15} {'Diferencia':>15}")
     print("-" * 60)
     
-    x_eval = np.array([1.5, 2.5, 3.5, 4.5])
+    x_eval = np.array([0.15, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75])
     for x_val in x_eval:
         p_val = polinomio_numerico(x_val)
-        expected = x_val**2 + 1
+        expected = f(x_val)
         diff = abs(p_val - expected)
         print(f"{x_val:12.4f} {p_val:15.8f} {expected:15.8f} {diff:15.2e}")
     
@@ -186,14 +181,15 @@ def main():
     print("GENERANDO GRÁFICA...")
     print("=" * 100 + "\n")
     
-    x_plot = np.linspace(0.5, 5.5, 200)
+    # Graficar en el intervalo [0.1, 0.8]
+    x_plot = np.linspace(0.1, 0.8, 300)
     y_plot = np.array([polinomio_numerico(xi) for xi in x_plot])
-    y_real = x_plot**2 + 1
+    y_real = f(x_plot)
     
     plt.figure(figsize=(12, 7))
     
-    # Graficar función real
-    plt.plot(x_plot, y_real, 'b-', linewidth=2, label='$f(x) = x^2 + 1$ (Real)')
+    # Graficar función real f(x) = log_x(arcsin(x))
+    plt.plot(x_plot, y_real, 'b-', linewidth=2, label=r'$f(x)=\log_{x}(\arcsin(x))$ (Real)')
     
     # Graficar polinomio interpolador
     plt.plot(x_plot, y_plot, 'r--', linewidth=2, label='$P(x)$ (Interpolador Newton)')
@@ -212,7 +208,7 @@ def main():
     
     # Anotaciones de los puntos
     for xi, yi in zip(x, y):
-        plt.annotate(f'({xi:.0f}, {yi:.0f})', 
+        plt.annotate(f'({xi:.2f}, {yi:.4f})', 
                     xy=(xi, yi), 
                     xytext=(5, 5), 
                     textcoords='offset points',
